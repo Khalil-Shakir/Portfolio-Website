@@ -34,23 +34,56 @@
             align-items: center;
             justify-content: space-between;
             position: fixed;
-            top: 32px;
+            /* Move navbar to bottom center */
+            bottom: 32px;
+            top: auto;
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
             border-radius: 18px;
-            transition: top 0.4s, opacity 0.4s;
             opacity: 1;
             width: max-content;
             min-width: 320px;
             max-width: 90vw;
             box-sizing: border-box;
+            animation-duration: 0.5s;
+            animation-fill-mode: both;
         }
 
-        header.hide-navbar {
-            top: -100px;
-            opacity: 0;
-            pointer-events: none;
+        header.navbar-slide-in {
+            animation-name: navbarSlideIn;
+        }
+
+        header.navbar-slide-out {
+            animation-name: navbarSlideOut;
+        }
+
+        @keyframes navbarSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.95) translateY(-60px) rotateX(30deg);
+                filter: blur(8px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1) translateY(0) rotateX(0deg);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes navbarSlideOut {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1) translateY(0) rotateX(0deg);
+                filter: blur(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.95) translateY(-60px) rotateX(30deg);
+                filter: blur(8px);
+            }
         }
 
         .logo {
@@ -66,10 +99,31 @@
             margin-left: 2rem;
             font-weight: 500;
             transition: color 0.2s;
+            position: relative;
+            /* Needed for the underline effect */
+        }
+
+        nav a::after {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -4px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transition: transform 0.25s cubic-bezier(.4, 2, .6, 1);
+            transform-origin: left;
         }
 
         nav a:hover {
             color: var(--accent);
+        }
+
+        nav a:hover::after {
+            transform: scaleX(1);
         }
 
         .hero {
@@ -280,7 +334,8 @@
         /* --- Menu Button and Navbar Styles --- */
         .menu-btn {
             position: fixed;
-            top: 16px;
+            /* Place at bottom center, below navbar */
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 200;
@@ -296,18 +351,27 @@
             font-size: 2rem;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(34, 34, 59, 0.12);
-            transition: background 0.2s;
+            /* Add smooth transitions for movement, color, and opacity */
+            transition:
+                background 0.2s,
+                color 0.2s,
+                opacity 0.3s,
+                transform 0.3s,
+                box-shadow 0.2s,
+                visibility 0.3s;
         }
 
-        .menu-btn:hover {
+        .menu-btn:hover,
+        .close-btn:hover {
             background: #277da1;
         }
 
         .close-btn {
-            left: auto !important;
-            right: 26%;
-            top: 50px;
-            transform: none;
+            left: 50% !important;
+            right: auto !important;
+            bottom: 90px;
+            top: auto;
+            transform: translateX(-50%);
             z-index: 201;
         }
 
@@ -318,24 +382,18 @@
                 visibility 0.3s,
                 background 0.2s,
                 transform 0.35s cubic-bezier(.4, 2, .6, 1);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .menu-btn.active,
+        .close-btn.active {
             opacity: 1;
             visibility: visible;
-            will-change: transform, opacity;
-        }
-
-        .menu-btn:active,
-        .close-btn:active {
-            transform: scale(0.92) rotate(-10deg);
-        }
-
-        .menu-btn.show-anim,
-        .close-btn.show-anim {
+            pointer-events: auto;
+            /* Optionally add a pop-in animation */
             animation: btn-pop-in 0.45s cubic-bezier(.4, 2, .6, 1);
-        }
-
-        .menu-btn.hide-anim,
-        .close-btn.hide-anim {
-            animation: btn-pop-out 0.35s cubic-bezier(.4, 2, .6, 1);
         }
 
         @keyframes btn-pop-in {
@@ -368,10 +426,13 @@
         }
 
         @media (max-width: 600px) {
-            .menu-btn {
+
+            .menu-btn,
+            .close-btn {
                 width: 40px;
                 height: 40px;
                 font-size: 1.5rem;
+                bottom: 8px;
             }
 
             .close-btn {
@@ -379,12 +440,117 @@
                 top: 20px;
             }
         }
+
+        /* Hide the navbar but keep it in the DOM for animation */
+        .hide-navbar {
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* 3D animation for about and project elements */
+        .animated-3d {
+            opacity: 0;
+            transform: perspective(800px) rotateY(40deg) scale(0.95) translateY(40px);
+            transition:
+                opacity 0.7s cubic-bezier(.4, 2, .6, 1),
+                transform 0.7s cubic-bezier(.4, 2, .6, 1);
+            will-change: opacity, transform;
+        }
+
+        .animated-3d.visible {
+            opacity: 1;
+            transform: perspective(800px) rotateY(0deg) scale(1) translateY(0);
+        }
+
+        /* Add this to your <style> for 3D click effect on sections */
+        .section.clicked-3d {
+            transition:
+                transform 0.7s cubic-bezier(.4, 2, .6, 1),
+                box-shadow 0.5s cubic-bezier(.4, 2, .6, 1);
+            /* The transform will be set inline from JS */
+            box-shadow: 0 16px 48px rgba(34, 34, 59, 0.18), 0 2px 12px rgba(34, 34, 59, 0.10);
+        }
+
+        .skills-bars {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .skill-bar {
+            background: #f1f1f1;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 12px rgba(34, 34, 59, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .skill-bar:hover {
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .skill-bar-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-bar-label img {
+            margin-right: 0.5rem;
+        }
+
+        .skill-bar-track {
+            background: #e0e1dd;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        @media (min-width: 600px) {
+            .skills-bars {
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            }
+        }
+
+        /* Add to your <style> section */
+        .typewriter {
+            display: inline-block;
+            border-right: 2px solid var(--accent);
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: bottom;
+            font-size: 3rem;
+            color: var(--primary);
+            min-width: 120px;
+            animation: blink-caret 0.7s steps(1) infinite;
+        }
+
+        @keyframes blink-caret {
+
+            0%,
+            100% {
+                border-color: var(--accent);
+            }
+
+            50% {
+                border-color: transparent;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <button class="menu-btn" id="menuBtn" title="Show Menu">&#9776;</button>
-    <button class="menu-btn close-btn" id="closeBtn" title="Close Menu" style="display:none;">&times;</button>
     <header id="mainHeader">
         <div class="logo">Khalil Shakir</div>
         <nav>
@@ -399,7 +565,9 @@
     <section class="hero">
         <canvas class="hero-particles-bg" id="heroParticles"></canvas>
         <div class="hero-content">
-            <h1>Hello, I'm <span style="color:var(--accent)">Khalil Shakir</span></h1>
+            <h1>
+                <span class="typewriter" id="typewriter"></span>
+            </h1>
             <p>I'm a passionate developer specializing in web, 3D, and interactive experiences. I love building clean,
                 modern, and performant applications.</p>
             <button class="cta" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View
@@ -412,46 +580,271 @@
     </section>
 
     <section class="section" id="about">
-        <div class="section-title">About Me</div>
+        <div class="section-title animated-3d">About Me</div>
         <div class="about-content">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="about-img">
-            <div class="about-text">
+            <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" alt="Profile"
+                class="about-img animated-3d">
+            <div class="about-text animated-3d">
                 <p>
                     I'm a software engineer with a focus on building immersive web experiences. My expertise includes
                     JavaScript, React, Three.js, and more. I enjoy solving complex problems and bringing ideas to life
                     with code.
                 </p>
                 <div class="skills-list">
-                    <span class="skill">JavaScript</span>
-                    <span class="skill">React</span>
-                    <span class="skill">Three.js</span>
-                    <span class="skill">HTML/CSS</span>
-                    <span class="skill">Node.js</span>
-                    <span class="skill">UI/UX</span>
+                    <span class="skill animated-3d">JavaScript</span>
+                    <span class="skill animated-3d">React</span>
+                    <span class="skill animated-3d">Three.js</span>
+                    <span class="skill animated-3d">HTML/CSS</span>
+                    <span class="skill animated-3d">Node.js</span>
+                    <span class="skill animated-3d">UI/UX</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="section" id="projects">
-        <div class="section-title">Projects</div>
+        <div class="section-title animated-3d">Projects</div>
         <div class="projects-grid">
-            <div class="project-card">
+            <div class="project-card animated-3d">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"
+                    alt="3D Portfolio" style="width:48px;height:48px;margin-bottom:1em;">
                 <div class="project-title">3D Portfolio</div>
                 <div class="project-desc">A personal portfolio website featuring interactive 3D models and smooth
                     animations.</div>
                 <a href="#" class="project-link">View Project</a>
             </div>
-            <div class="project-card">
+            <div class="project-card animated-3d">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                    alt="Web Game" style="width:48px;height:48px;margin-bottom:1em;">
                 <div class="project-title">Web Game</div>
                 <div class="project-desc">A browser-based game built with JavaScript and WebGL for a fun, interactive
                     experience.</div>
                 <a href="#" class="project-link">View Project</a>
             </div>
-            <div class="project-card">
+            <div class="project-card animated-3d">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="UI Kit"
+                    style="width:48px;height:48px;margin-bottom:1em;">
                 <div class="project-title">UI Kit</div>
                 <div class="project-desc">A modern UI component library for fast and beautiful web development.</div>
                 <a href="#" class="project-link">View Project</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="skills">
+        <div class="section-title animated-3d">Skills</div>
+        <div class="skills-bars">
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                        alt="JavaScript" style="width:18px;vertical-align:middle;margin-right:6px;">
+                    JavaScript
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:95%;background:linear-gradient(90deg,#f7df1e,#ffe484);box-shadow:0 2px 8px #f7df1e80;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+                        alt="TypeScript" style="width:18px;vertical-align:middle;margin-right:6px;">
+                    TypeScript
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:85%;background:linear-gradient(90deg,#3178c6,#6ec1e4);box-shadow:0 2px 8px #3178c680;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React"
+                        style="width:18px;vertical-align:middle;margin-right:6px;">
+                    React
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:90%;background:linear-gradient(90deg,#61dafb,#b2f1fb);box-shadow:0 2px 8px #61dafb80;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"
+                        alt="Next.js"
+                        style="width:18px;vertical-align:middle;margin-right:6px;background:#fff;border-radius:3px;">
+                    Next.js
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:80%;background:linear-gradient(90deg,#000,#444);box-shadow:0 2px 8px #00000080;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+                        alt="Node.js" style="width:18px;vertical-align:middle;margin-right:6px;">
+                    Node.js
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:85%;background:linear-gradient(90deg,#68a063,#b6e2b3);box-shadow:0 2px 8px #68a06380;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"
+                        alt="Three.js"
+                        style="width:18px;vertical-align:middle;margin-right:6px;background:#fff;border-radius:3px;">
+                    Three.js
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:75%;background:linear-gradient(90deg,#000,#888);box-shadow:0 2px 8px #00000080;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5"
+                        style="width:18px;vertical-align:middle;margin-right:6px;">
+                    HTML5
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:95%;background:linear-gradient(90deg,#e44d26,#ffb199);box-shadow:0 2px 8px #e44d2680;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3"
+                        style="width:18px;vertical-align:middle;margin-right:6px;">
+                    CSS3
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:90%;background:linear-gradient(90deg,#2965f1,#6ec1e4);box-shadow:0 2px 8px #2965f180;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="Sass"
+                        style="width:18px;vertical-align:middle;margin-right:6px;">
+                    Sass
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:80%;background:linear-gradient(90deg,#cc6699,#fcb7d4);box-shadow:0 2px 8px #cc669980;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"
+                        style="width:18px;vertical-align:middle;margin-right:6px;">
+                    Git
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:85%;background:linear-gradient(90deg,#f34f29,#fbb199);box-shadow:0 2px 8px #f34f2980;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma"
+                        style="width:18px;vertical-align:middle;margin-right:6px;">
+                    Figma
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:70%;background:linear-gradient(90deg,#a259ff,#fbb199);box-shadow:0 2px 8px #a259ff80;">
+                    </div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://img.icons8.com/ios-filled/50/4ea8de/design--v1.png" alt="UI/UX"
+                        style="width:18px;vertical-align:middle;margin-right:6px;">
+                    UI/UX
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width:80%;background:linear-gradient(90deg,#4ea8de,#b2f1fb);box-shadow:0 2px 8px #4ea8de80;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="experience">
+        <div class="section-title animated-3d">Experience</div>
+        <div class="animated-3d">
+            <h3 style="margin-bottom:0.2em;">
+                <img src="https://img.icons8.com/color/48/000000/briefcase.png" alt="Frontend Developer"
+                    style="width:20px;vertical-align:middle;margin-right:6px;">
+                Frontend Developer <span style="color:var(--accent);font-weight:400;">@ Tech Solutions</span>
+            </h3>
+            <p style="margin:0 0 0.5em 0;font-size:0.98em;color:#888;">2022 – Present</p>
+            <ul style="margin:0 0 1.5em 1.2em;font-size:1em;">
+                <li>Developed interactive dashboards and 3D visualizations using React and Three.js.</li>
+                <li>Collaborated with designers to deliver pixel-perfect UI/UX.</li>
+            </ul>
+        </div>
+        <div class="animated-3d">
+            <h3 style="margin-bottom:0.2em;">
+                <img src="https://img.icons8.com/color/48/000000/briefcase.png" alt="Web Developer"
+                    style="width:20px;vertical-align:middle;margin-right:6px;">
+                Web Developer <span style="color:var(--accent);font-weight:400;">@ Creative Studio</span>
+            </h3>
+            <p style="margin:0 0 0.5em 0;font-size:0.98em;color:#888;">2020 – 2022</p>
+            <ul style="margin:0 0 1.5em 1.2em;font-size:1em;">
+                <li>Built and maintained modern websites and web apps for clients.</li>
+                <li>Optimized performance and accessibility across devices.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section" id="education">
+        <div class="section-title animated-3d">Education</div>
+        <div class="animated-3d">
+            <h3 style="margin-bottom:0.2em;">
+                <img src="https://img.icons8.com/color/48/000000/graduation-cap.png" alt="B.Sc. in Computer Science"
+                    style="width:20px;vertical-align:middle;margin-right:6px;">
+                B.Sc. in Computer Science
+            </h3>
+            <p style="margin:0 0 0.5em 0;font-size:0.98em;color:#888;">University of Example, 2016 – 2020</p>
+            <ul style="margin:0 0 1.5em 1.2em;font-size:1em;">
+                <li>Graduated with Honors</li>
+                <li>Specialized in Web Technologies and Graphics Programming</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section" id="testimonials">
+        <div class="section-title animated-3d">Testimonials</div>
+        <div class="animated-3d" style="margin-bottom:1.5em;display:flex;align-items:flex-start;gap:1.2em;">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Doe"
+                style="width:48px;height:48px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(34,34,59,0.10);">
+            <div>
+                <blockquote style="font-style:italic;color:#555;">"Khalil is a creative and reliable developer. His
+                    attention to detail and passion for interactive design is outstanding!"</blockquote>
+                <div style="font-weight:600;color:var(--accent);margin-top:0.5em;">— Jane Doe, Product Manager</div>
+            </div>
+        </div>
+        <div class="animated-3d" style="display:flex;align-items:flex-start;gap:1.2em;">
+            <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="John Smith"
+                style="width:48px;height:48px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(34,34,59,0.10);">
+            <div>
+                <blockquote style="font-style:italic;color:#555;">"Delivered our project ahead of schedule with
+                    beautiful results. Highly recommended!"</blockquote>
+                <div style="font-weight:600;color:var(--accent);margin-top:0.5em;">— John Smith, CEO, Startup Inc.</div>
             </div>
         </div>
     </section>
@@ -543,7 +936,7 @@
             // Initial reveal for first section
             setTimeout(() => {
                 sections[0].classList.add('visible');
-            }, 300);
+            }, 200);
         });
     </script>
     <script>
@@ -657,29 +1050,40 @@
     <script>
         // Floating, autohide navbar with menu button and close button
         const header = document.getElementById('mainHeader');
-        const menuBtn = document.getElementById('menuBtn');
-        const closeBtn = document.getElementById('closeBtn');
         let lastScrollY = window.scrollY;
         let navbarVisible = true;
         let hideTimeout = null;
 
+        // Update showNavbar and hideNavbar to toggle .active for transitions
         function showNavbar() {
-            header.classList.remove('hide-navbar');
+            header.classList.remove('hide-navbar', 'navbar-slide-out');
+            header.classList.add('navbar-slide-in');
             navbarVisible = true;
-            menuBtn.style.display = 'none';
-            closeBtn.style.display = 'flex';
-            // Auto-hide after 2.5s if not hovering
             clearTimeout(hideTimeout);
             hideTimeout = setTimeout(() => {
                 if (!header.matches(':hover')) hideNavbar();
             }, 2500);
+
+            header.addEventListener('animationend', function handler(e) {
+                if (e.animationName === 'navbarSlideIn') {
+                    header.classList.remove('navbar-slide-in');
+                    header.removeEventListener('animationend', handler);
+                }
+            });
         }
 
         function hideNavbar() {
-            header.classList.add('hide-navbar');
+            header.classList.remove('navbar-slide-in');
+            header.classList.add('navbar-slide-out');
             navbarVisible = false;
-            menuBtn.style.display = 'flex';
-            closeBtn.style.display = 'none';
+
+            header.addEventListener('animationend', function handler(e) {
+                if (e.animationName === 'navbarSlideOut') {
+                    header.classList.add('hide-navbar');
+                    header.classList.remove('navbar-slide-out');
+                    header.removeEventListener('animationend', handler);
+                }
+            });
         }
 
         // Hide on scroll down, show on scroll up
@@ -696,26 +1100,6 @@
             lastScrollY = window.scrollY;
         });
 
-        // Show navbar when menu button clicked
-        menuBtn.addEventListener('click', () => {
-            showNavbar();
-        });
-
-        // Hide navbar when close button clicked
-        closeBtn.addEventListener('click', () => {
-            hideNavbar();
-        });
-
-        // Keep navbar visible while hovered
-        header.addEventListener('mouseenter', () => {
-            clearTimeout(hideTimeout);
-        });
-        header.addEventListener('mouseleave', () => {
-            if (navbarVisible) {
-                hideTimeout = setTimeout(hideNavbar, 1800);
-            }
-        });
-
         // Hide initially if not at top
         document.addEventListener('DOMContentLoaded', () => {
             // Instantly hide both buttons to prevent flicker
@@ -729,11 +1113,63 @@
                 } else {
                     header.classList.remove('hide-navbar');
                     navbarVisible = true;
-                    menuBtn.style.display = 'none';
-                    closeBtn.style.display = 'flex';
                 }
             }, -100);
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedEls = document.querySelectorAll('.animated-3d');
+            function reveal3dElements() {
+                animatedEls.forEach((el, i) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 60) {
+                        setTimeout(() => el.classList.add('visible'), i * 10); // stagger
+                    }
+                });
+            }
+            window.addEventListener('scroll', reveal3dElements);
+            window.addEventListener('resize', reveal3dElements);
+            reveal3dElements();
+        });
+    </script>
+    <script>
+        // Place this after your DOMContentLoaded or at the end of the body
+        const words = [
+            "HELLO, I AM KHALIL SHAKIR",
+            "WEB DEVELOPER",
+            "3D ENTHUSIAST",
+            "UI/UX DESIGNER",
+            "REACT SPECIALIST",
+            "CREATIVE CODER"
+        ];
+        let twIndex = 0, charIndex = 0, isDeleting = false;
+        const twElem = document.getElementById('typewriter');
+
+        function typeWriter() {
+            const word = words[twIndex];
+            if (isDeleting) {
+                charIndex--;
+                twElem.textContent = word.substring(0, charIndex);
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    twIndex = (twIndex + 1) % words.length;
+                    setTimeout(typeWriter, 700);
+                } else {
+                    setTimeout(typeWriter, 40);
+                }
+            } else {
+                charIndex++;
+                twElem.textContent = word.substring(0, charIndex);
+                if (charIndex === word.length) {
+                    isDeleting = true;
+                    setTimeout(typeWriter, 1200);
+                } else {
+                    setTimeout(typeWriter, 80);
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', typeWriter);
     </script>
 </body>
 
