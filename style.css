@@ -17,6 +17,15 @@ body {
     overflow-x: hidden;
 }
 
+/* Make all text unselectable */
+body,
+body * {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+}
+
 header {
     background: var(--white);
     box-shadow: 0 2px 8px rgba(34, 34, 59, 0.05);
@@ -136,7 +145,6 @@ nav a:hover::after {
     pointer-events: none;
 }
 
-.hero-content,
 .hero-3d {
     position: relative;
     z-index: 2;
@@ -153,6 +161,86 @@ nav a:hover::after {
     font-size: 1.25rem;
     margin-bottom: 2rem;
     color: #444;
+}
+
+/* Image in the hero section */
+
+/* Add or update these styles */
+
+.hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 3.5rem;
+}
+
+.hero-content {
+    flex: 1 1 0;
+    min-width: 280px;
+    z-index: 2;
+}
+
+.hero-image-wrap {
+    margin-right: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2.5rem;
+    animation: heroImageIn 1.2s cubic-bezier(.4, 2, .6, 1);
+}
+
+.hero-image {
+    width: 370px;
+    height: 370px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 8px 32px rgba(78, 168, 222, 0.18), 0 2px 12px rgba(34, 34, 59, 0.10);
+    outline: 3px solid var(--accent);
+    outline-offset: 6px;
+    opacity: 0;
+    transform: scale(0.85) translateY(40px);
+    animation: heroImageFadeIn 1.2s 0.3s cubic-bezier(.4, 2, .6, 1) forwards;
+    transition: outline-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    background: linear-gradient(135deg, #e0e1dd 0%, #4ea8de 100%);
+}
+
+.hero-image:hover {
+    outline-color: #277da1;
+    box-shadow: 0 16px 48px rgba(78, 168, 222, 0.28), 0 4px 16px rgba(34, 34, 59, 0.13);
+    transform: scale(1.06) rotate(-2deg);
+    filter: brightness(1.08) saturate(1.15);
+}
+
+@keyframes heroImageFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(40px);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1.05) translateY(-8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@media (max-width: 900px) {
+    .hero-inner {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: flex-start;
+    }
+
+    .hero-image-wrap {
+        margin-left: 0;
+        margin-top: 2rem;
+    }
 }
 
 .hero .cta {
@@ -518,4 +606,69 @@ footer {
     50% {
         border-color: transparent;
     }
+}
+
+/* Add to your style.css for the dots */
+
+.section-dots-nav {
+    position: fixed;
+    top: 50%;
+    left: 24px;
+    transform: translateY(-50%);
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+.section-dots-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.section-dots-nav .dot-nav {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #e0e1dd;
+    box-shadow: 0 2px 8px rgba(34, 34, 59, 0.10);
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    pointer-events: auto;
+    border: 2px solid #fff;
+    position: relative;
+    opacity: 0.7;
+}
+
+.section-dots-nav .dot-nav.active {
+    background: var(--accent);
+    box-shadow: 0 0 0 6px rgba(78, 168, 222, 0.18), 0 2px 12px rgba(34, 34, 59, 0.10);
+    transform: scale(1.25);
+    opacity: 1;
+    animation: dotPulse 0.7s;
+}
+
+@keyframes dotPulse {
+    0% {
+        transform: scale(1.5);
+    }
+
+    60% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1.25);
+    }
+}
+
+.section-dots-nav .dot-nav:hover {
+    background: #4ea8de;
+    opacity: 1;
+    transform: scale(1.15);
 }

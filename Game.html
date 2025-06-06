@@ -10,6 +10,18 @@
 </head>
 
 <body>
+    <!-- Add this just after <body> and before your header -->
+    <div class="section-dots-nav">
+        <ul>
+            <li data-section="about" class="dot-nav"></li>
+            <li data-section="projects" class="dot-nav"></li>
+            <li data-section="skills" class="dot-nav"></li>
+            <li data-section="experience" class="dot-nav"></li>
+            <li data-section="education" class="dot-nav"></li>
+            <li data-section="testimonials" class="dot-nav"></li>
+            <li data-section="contact" class="dot-nav"></li>
+        </ul>
+    </div>
     <header id="mainHeader">
         <div class="logo">Khalil Shakir</div>
         <nav>
@@ -22,23 +34,32 @@
             <a href="#contact">Contact</a>
         </nav>
     </header>
+
     <div class="scroll-line-container">
         <div class="scroll-line" id="scrollLine"></div>
     </div>
+
     <section class="hero">
         <canvas class="hero-particles-bg" id="heroParticles"></canvas>
-        <div class="hero-content">
-            <h1>
-                <span class="typewriter" id="typewriter"></span>
-            </h1>
-            <p>I'm a passionate developer specializing in web, 3D, and interactive experiences. I love building clean,
-                modern, and performant applications.</p>
-            <button class="cta" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View
-                Projects</button>
-        </div>
-        <div class="hero-3d">
-            <!-- Simple 3D Model using Three.js -->
-            <canvas id="threeCanvas" style="width:100%;height:100%;display:block;"></canvas>
+        <div class="hero-inner" style="display: flex; align-items: center; justify-content: flex-start; width: 100%;">
+            <div class="hero-content" style="display: flex; flex-direction: column; align-items: flex-start;">
+                <h1>
+                    <span class="typewriter" id="typewriter"></span>
+                </h1>
+                <div id="heroTextWrap" style="width: max-content; min-width: 320px;">
+                    <p style="margin: 0 0 2rem 0; color: #444; font-size: 1.25rem; max-width: 100%;">
+                        I'm a passionate developer specializing in web, 3D, and interactive experiences. I love building
+                        clean,
+                        modern, and performant applications.
+                    </p>
+                    <button class="cta"
+                        onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View
+                        Projects</button>
+                </div>
+            </div>
+            <div class="hero-image-wrap">
+                <img src="MyImage.png" alt="Khalil Shakir" class="hero-image" />
+            </div>
         </div>
     </section>
 
@@ -234,7 +255,7 @@
 
     <!-- Three.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
-    <script src="script.js"></script>
+    <script src="main.js"></script>
 </body>
 
 </html>

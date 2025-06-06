@@ -305,3 +305,251 @@ function typeWriter() {
     }
 }
 document.addEventListener('DOMContentLoaded', typeWriter);
+
+// --- Hero Ball & Crosses Animation ---
+(function () {
+    const canvas = document.getElementById('heroBallCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resize() {
+        width = canvas.clientWidth;
+        height = canvas.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Crosses
+    const crosses = [];
+    const crossCount = 5;
+    const crossSpacing = width / (crossCount + 1);
+    for (let i = 0; i < crossCount; i++) {
+        crosses.push({
+            x: (i + 1) * crossSpacing,
+            y: height - 60,
+            size: 36,
+            angle: 0,
+            rotating: false
+        });
+    }
+
+    // Ball
+    let ball = {
+        x: width / 2,
+        y: 60,
+        r: 22,
+        vy: 0,
+        gravity: 0.7,
+        bounce: -0.65,
+        color: "#4ea8de",
+        isFalling: true
+    };
+
+    function resetBall() {
+        ball.x = width / 2;
+        ball.y = 60;
+        ball.vy = 0;
+        ball.isFalling = true;
+    }
+
+    function drawCross(cross) {
+        ctx.save();
+        ctx.translate(cross.x, cross.y);
+        ctx.rotate(cross.angle);
+        ctx.strokeStyle = "#22223b";
+        ctx.lineWidth = 7;
+        ctx.beginPath();
+        ctx.moveTo(-cross.size / 2, 0);
+        ctx.lineTo(cross.size / 2, 0);
+        ctx.moveTo(0, -cross.size / 2);
+        ctx.lineTo(0, cross.size / 2);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function drawBall() {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+        ctx.fillStyle = ball.color;
+        ctx.shadowColor = "#4ea8de";
+        ctx.shadowBlur = 18;
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw crosses
+        crosses.forEach(drawCross);
+
+        // Ball physics
+        if (ball.isFalling) {
+            ball.vy += ball.gravity;
+            ball.y += ball.vy;
+
+            // Collision with crosses
+            for (let cross of crosses) {
+                const dx = ball.x - cross.x;
+                const dy = ball.y - cross.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < ball.r + cross.size / 2 && ball.vy > 0) {
+                    ball.y = cross.y - (ball.r + cross.size / 2) + 2;
+                    ball.vy *= ball.bounce;
+                    cross.rotating = true;
+                }
+            }
+
+            // Collision with floor
+            if (ball.y + ball.r > height) {
+                ball.y = height - ball.r;
+                ball.vy *= ball.bounce;
+                if (Math.abs(ball.vy) < 2) {
+                    setTimeout(resetBall, 900);
+                }
+            }
+        }
+
+        // Animate cross rotation
+        crosses.forEach(cross => {
+            if (cross.rotating) {
+                cross.angle += 0.18;
+                if (cross.angle > Math.PI * 2) {
+                    cross.angle = 0;
+                    cross.rotating = false;
+                }
+            }
+        });
+
+        drawBall();
+        requestAnimationFrame(animate);
+    }
+
+    // Responsive crosses on resize
+    function updateCrosses() {
+        crosses.length = 0;
+        const spacing = width / (crossCount + 1);
+        for (let i = 0; i < crossCount; i++) {
+            crosses.push({
+                x: (i + 1) * spacing,
+                y: height - 60,
+                size: 36,
+                angle: 0,
+                rotating: false
+            });
+        }
+    }
+    window.addEventListener('resize', () => {
+        resize();
+        updateCrosses();
+        resetBall();
+    });
+
+    animate();
+})();
+
+// --- Typewriter width sync for hero text ---
+document.addEventListener('DOMContentLoaded', () => {
+    const typewriter = document.getElementById('typewriter');
+    const heroTextWrap = document.getElementById('heroTextWrap');
+    if (typewriter && heroTextWrap) {
+        let maxWidth = 0;
+        const words = [
+            "HELLO, I AM KHALIL SHAKIR",
+            "WEB DEVELOPER",
+            "3D ENTHUSIAST",
+            "UI/UX DESIGNER",
+            "REACT SPECIALIST",
+            "CREATIVE CODER"
+        ];
+        // Create a hidden span to measure each word's width
+        const measureSpan = document.createElement('span');
+        measureSpan.style.visibility = 'hidden';
+        measureSpan.style.position = 'absolute';
+        measureSpan.style.whiteSpace = 'nowrap';
+        measureSpan.style.fontSize = window.getComputedStyle(typewriter).fontSize;
+        measureSpan.style.fontFamily = window.getComputedStyle(typewriter).fontFamily;
+        document.body.appendChild(measureSpan);
+
+        words.forEach(word => {
+            measureSpan.textContent = word;
+            maxWidth = Math.max(maxWidth, measureSpan.offsetWidth);
+        });
+        document.body.removeChild(measureSpan);
+
+        heroTextWrap.style.width = maxWidth + "px";
+        window.addEventListener('resize', () => {
+            // Recalculate on resize
+            let maxWidth = 0;
+            document.body.appendChild(measureSpan);
+            words.forEach(word => {
+                measureSpan.textContent = word;
+                maxWidth = Math.max(maxWidth, measureSpan.offsetWidth);
+            });
+            document.body.removeChild(measureSpan);
+            heroTextWrap.style.width = maxWidth + "px";
+        });
+    }
+});
+
+
+// --- Dots for each section ---
+document.addEventListener('DOMContentLoaded', () => {
+    const dotNavs = document.querySelectorAll('.section-dots-nav .dot-nav');
+    // Swap the order of 'projects' and 'skills' in sectionIds
+    const sectionIds = [
+        'about',
+        'skills',      // skills now comes before projects
+        'projects',    // projects now comes after skills
+        'experience',
+        'education',
+        'testimonials',
+        'contact'
+    ];
+    const sections = sectionIds.map(id => document.getElementById(id));
+
+    function updateActiveDot() {
+        // If at the hero/landing section (before first main section), deactivate all dots
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            const rect = hero.getBoundingClientRect();
+            if (rect.bottom > window.innerHeight * 0.35) {
+                dotNavs.forEach(dot => dot.classList.remove('active'));
+                return;
+            }
+        }
+        let activeIdx = 0;
+        for (let i = 0; i < sections.length; i++) {
+            const rect = sections[i]?.getBoundingClientRect();
+            if (rect && rect.top <= window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+                activeIdx = i;
+                break;
+            }
+        }
+        dotNavs.forEach((dot, i) => {
+            dot.classList.toggle('active', i === activeIdx);
+        });
+    }
+
+    // Scroll to section on dot click
+    dotNavs.forEach((dot, i) => {
+        dot.addEventListener('click', e => {
+            e.preventDefault();
+            const section = sections[i];
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    });
+
+    window.addEventListener('scroll', updateActiveDot);
+    window.addEventListener('resize', updateActiveDot);
+    updateActiveDot();
+});
+
+
+
