@@ -522,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
         }
-        let activeIdx = 0;
+        let activeIdx = -1;
         for (let i = 0; i < sections.length; i++) {
             const rect = sections[i]?.getBoundingClientRect();
             if (rect && rect.top <= window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
@@ -553,3 +553,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+// --- Modern Dark Mode Toggle with SVG Icons ---
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('nightToggleBtn');
+    const sunIcon = `<svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="5" fill="#FFD600"/><g stroke="#FFD600" stroke-width="2"><line x1="13" y1="2" x2="13" y2="6"/><line x1="13" y1="20" x2="13" y2="24"/><line x1="2" y1="13" x2="6" y2="13"/><line x1="20" y1="13" x2="24" y2="13"/><line x1="5.22" y1="5.22" x2="7.75" y2="7.75"/><line x1="18.25" y1="18.25" x2="20.78" y2="20.78"/><line x1="5.22" y1="20.78" x2="7.75" y2="18.25"/><line x1="18.25" y1="7.75" x2="20.78" y2="5.22"/></g></svg>`;
+    const moonIcon = `<svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M21 17.5C19.5 18.5 17.5 19 15.5 19C10.2533 19 6 14.7467 6 9.5C6 7.5 6.5 5.5 7.5 4C4.5 5.5 2.5 8.5 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C15.5 21.5 18.5 19.5 21 17.5Z" fill="#4ea8de"/></svg>`;
+    const saved = localStorage.getItem('night-mode');
+    function setIcon(isNight) {
+        btn.innerHTML = isNight ? sunIcon : moonIcon;
+    }
+    if (saved === 'on' || document.body.classList.contains('night-mode')) {
+        document.body.classList.add('night-mode');
+        setIcon(true);
+    } else {
+        setIcon(false);
+    }
+    btn.addEventListener('click', () => {
+        const isNight = !document.body.classList.contains('night-mode');
+        document.body.classList.toggle('night-mode');
+        setIcon(isNight);
+        localStorage.setItem('night-mode', isNight ? 'on' : 'off');
+    });
+});

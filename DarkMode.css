@@ -1,0 +1,264 @@
+/* Night Mode (Dark Mode) Theme for Portfolio */
+
+:root {
+    --night-bg: #181a2a;
+    --night-card: #23244a;
+    --night-primary: #e0e1dd;
+    --night-accent: #4ea8de;
+    --night-accent2: #277da1;
+    --night-border: #23244a;
+    --night-shadow: 0 8px 32px rgba(34, 34, 59, 0.18);
+    --night-muted: #888ca3;
+    --night-white: #23244a;
+}
+
+body.night-mode {
+    background: var(--night-bg) !important;
+    color: var(--night-primary) !important;
+    transition: background 0.4s, color 0.4s;
+}
+
+//* Remove these from the selector: 
+body.night-mode .about-text,
+body.night-mode .skills-bars,
+body.night-mode .skill-bar-label,
+body.night-mode .projects-grid,
+body.night-mode .section-title,
+*/ body.night-mode footer,
+body.night-mode .section,
+body.night-mode .project-card,
+body.night-mode .skill-bar,
+body.night-mode .hero,
+body.night-mode .hero-content,
+body.night-mode .hero-inner,
+body.night-mode .hero-image-wrap,
+body.night-mode .about-content,
+body.night-mode .about-img,
+body.night-mode .skill-bar-track,
+body.night-mode .skill-bar-fill,
+body.night-mode .scroll-line-container,
+body.night-mode .scroll-line,
+body.night-mode nav,
+body.night-mode .menu-btn,
+body.night-mode .close-btn {
+    background: var(--night-card);
+    color: var(--night-primary);
+    box-shadow: var(--night-shadow);
+    border-color: var(--night-border);
+    transition: background 0.4s, color 0.4s, box-shadow 0.4s, border-color 0.4s;
+}
+
+body.night-mode header {
+    background: var(--night-accent) !important;
+    color: var(--night-bg) !important;
+    box-shadow: var(--night-shadow) !important;
+    border-color: var(--night-border) !important;
+    transition: background 0.4s, color 0.4s, box-shadow 0.4s, border-color 0.4s;
+}
+
+body.night-mode header .logo,
+body.night-mode header nav a {
+    color: var(--night-bg) !important;
+}
+
+body.night-mode .section-title,
+body.night-mode .logo,
+body.night-mode nav a,
+body.night-mode .project-title,
+body.night-mode .skill-bar-label,
+body.night-mode .typewriter {
+    color: var(--night-primary) !important;
+}
+
+nav a {
+    position: relative;
+    /* ... */
+}
+
+nav a::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 0;
+    background: var(--night-bg);
+    /* or your accent color */
+    transition: all 0.3s;
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+}
+
+nav a:hover::after,
+nav a.active::after {
+    width: 100%;
+}
+
+body.night-mode .hero {
+    background: linear-gradient(120deg, #23244a 0%, #22223b 100%) !important;
+}
+
+body.night-mode .hero-image {
+    border: 4px solid #23244a !important;
+    outline: 3px solid var(--night-accent) !important;
+    background: linear-gradient(135deg, #23244a 0%, #4ea8de 100%) !important;
+}
+
+body.night-mode .hero-image:hover {
+    outline-color: var(--night-accent2) !important;
+    box-shadow: 0 16px 48px rgba(78, 168, 222, 0.28), 0 4px 16px rgba(34, 34, 59, 0.13) !important;
+    filter: brightness(1.08) saturate(1.15);
+}
+
+body.night-mode .project-card,
+body.night-mode .skill-bar {
+    background: #23244a !important;
+    color: #e0e1dd !important;
+    box-shadow: 0 8px 32px rgba(34, 34, 59, 0.18) !important;
+}
+
+body.night-mode .project-desc,
+body.night-mode .skill-bar-label {
+    color: #e0e1dd !important;
+}
+
+body.night-mode .skill-bar-track {
+    background: #181a2a !important;
+}
+
+body.night-mode .skill-bar-fill {
+    background: linear-gradient(90deg, #4ea8de, #277da1) !important;
+}
+
+body.night-mode .scroll-line-container {
+    background: #23244a !important;
+}
+
+body.night-mode .scroll-line {
+    background: linear-gradient(180deg, var(--night-accent), var(--night-accent2)) !important;
+}
+
+body.night-mode footer {
+    background: #181a2a !important;
+    color: #aaa !important;
+}
+
+body.night-mode nav a {
+    color: #e0e1dd !important;
+}
+
+body.night-mode nav a:hover {
+    color: #3b5280 !important;
+}
+
+body.night-mode .section-dots-nav .dot-nav {
+    background: #23244a !important;
+    border: 2px solid #4ea8de !important;
+}
+
+body.night-mode .section-dots-nav .dot-nav.active {
+    background: var(--night-accent) !important;
+    box-shadow: 0 0 0 6px rgba(78, 168, 222, 0.18), 0 2px 12px rgba(34, 34, 59, 0.10) !important;
+}
+
+body.night-mode .about-img {
+    border: 4px solid #23244a !important;
+    background: #181a2a !important;
+}
+
+body.night-mode .skill {
+    background: #23244a !important;
+    color: #e0e1dd !important;
+}
+
+body.night-mode .project-link {
+    color: #4ea8de !important;
+}
+
+body.night-mode .project-link:hover {
+    color: #277da1 !important;
+}
+
+body.night-mode .section {
+    background: #23244a !important;
+    color: #e0e1dd !important;
+    /* Beautiful, soft blue-tinted shadow for night mode */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+    border-radius: 18px;
+    transition: box-shadow 0.4s, background 0.4s, color 0.4s;
+}
+
+body.night-mode .section-title {
+    color: #4ea8de !important;
+}
+
+/* --- Modern Restyle for Night and Light Mode Toggle Buttons --- */
+
+/* Shared base style for toggle button */
+.night-toggle-btn {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    z-index: 999;
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    border-radius: 50%;
+    border: 2.5px solid #4ea8de;
+    background: linear-gradient(135deg, #e0e1dd 60%, #4ea8de 100%);
+    color: #23244a;
+    box-shadow: 0 6px 24px rgba(78, 168, 222, 0.18), 0 2px 8px rgba(34, 34, 59, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition:
+        background 0.3s,
+        color 0.3s,
+        box-shadow 0.3s,
+        border-color 0.3s,
+        transform 0.2s;
+    outline: none;
+    padding: 0;
+    overflow: hidden;
+}
+
+.night-toggle-btn svg {
+    width: 28px;
+    height: 28px;
+    display: block;
+    pointer-events: none;
+    transition: filter 0.3s;
+}
+
+.night-toggle-btn:hover {
+    background: linear-gradient(135deg, #4ea8de 60%, #e0e1dd 100%);
+    color: #fff;
+    box-shadow: 0 12px 32px rgba(78, 168, 222, 0.22), 0 4px 16px rgba(34, 34, 59, 0.13);
+    border-color: #fff;
+    transform: scale(1.08) rotate(-8deg);
+}
+
+.night-toggle-btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 8px rgba(78, 168, 222, 0.10);
+}
+
+/* Night mode style for the toggle button */
+body.night-mode .night-toggle-btn {
+    background: linear-gradient(135deg, #23244a 60%, #4ea8de 100%);
+    color: #ffd600;
+    border-color: #ffd600;
+    box-shadow: 0 6px 24px rgba(34, 34, 59, 0.22), 0 2px 8px rgba(78, 168, 222, 0.13);
+}
+
+body.night-mode .night-toggle-btn:hover {
+    background: linear-gradient(135deg, #4ea8de 60%, #23244a 100%);
+    color: #fff;
+    border-color: #fff;
+}
+
+body.night-mode .night-toggle-btn svg {
+    filter: drop-shadow(0 0 4px #ffd60088);
+}
