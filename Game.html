@@ -6,548 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>My Portfolio</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #22223b;
-            --accent: #4ea8de;
-            --bg: #f8f9fa;
-            --white: #fff;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg);
-            color: var(--primary);
-            overflow-x: hidden;
-        }
-
-        header {
-            background: var(--white);
-            box-shadow: 0 2px 8px rgba(34, 34, 59, 0.05);
-            padding: 1.5rem 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            /* Move navbar to bottom center */
-            bottom: 32px;
-            top: auto;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            border-radius: 18px;
-            opacity: 1;
-            width: max-content;
-            min-width: 320px;
-            max-width: 90vw;
-            box-sizing: border-box;
-            animation-duration: 0.5s;
-            animation-fill-mode: both;
-        }
-
-        header.navbar-slide-in {
-            animation-name: navbarSlideIn;
-        }
-
-        header.navbar-slide-out {
-            animation-name: navbarSlideOut;
-        }
-
-        @keyframes navbarSlideIn {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) scale(0.95) translateY(-60px) rotateX(30deg);
-                filter: blur(8px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1) translateY(0) rotateX(0deg);
-                filter: blur(0);
-            }
-        }
-
-        @keyframes navbarSlideOut {
-            0% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1) translateY(0) rotateX(0deg);
-                filter: blur(0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translateX(-50%) scale(0.95) translateY(-60px) rotateX(30deg);
-                filter: blur(8px);
-            }
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
-
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            margin-left: 2rem;
-            font-weight: 500;
-            transition: color 0.2s;
-            position: relative;
-            /* Needed for the underline effect */
-        }
-
-        nav a::after {
-            content: "";
-            display: block;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -4px;
-            height: 2px;
-            background: var(--accent);
-            border-radius: 2px;
-            transform: scaleX(0);
-            transition: transform 0.25s cubic-bezier(.4, 2, .6, 1);
-            transform-origin: left;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        nav a:hover::after {
-            transform: scaleX(1);
-        }
-
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5vw;
-            background: linear-gradient(120deg, #e0e1dd 0%, #f8f9fa 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-particles-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .hero-content,
-        .hero-3d {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin: 0 0 1rem 0;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: #444;
-        }
-
-        .hero .cta {
-            background: var(--accent);
-            color: var(--white);
-            padding: 0.75rem 2rem;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 24px rgba(78, 168, 222, 0.15);
-            transition: background 0.2s;
-        }
-
-        .hero .cta:hover {
-            background: #277da1;
-        }
-
-        .hero-3d {
-            width: 400px;
-            height: 400px;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 900px) {
-            .hero {
-                flex-direction: column;
-                padding: 2rem 1rem;
-                text-align: center;
-            }
-
-            .hero-3d {
-                margin: 2rem auto 0 auto;
-                width: 300px;
-                height: 300px;
-            }
-        }
-
-        /* Scroll Line Reveal */
-        .scroll-line-container {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 6px;
-            height: 100vh;
-            background: #e0e1dd;
-            z-index: 20;
-        }
-
-        .scroll-line {
-            width: 100%;
-            background: linear-gradient(180deg, var(--accent), #277da1);
-            height: 0;
-            transition: height 0.3s cubic-bezier(.4, 2, .6, 1);
-            border-radius: 3px;
-        }
-
-        .section {
-            opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 0.7s cubic-bezier(.4, 2, .6, 1), transform 0.7s cubic-bezier(.4, 2, .6, 1);
-            margin: 0 auto 6rem auto;
-            max-width: 900px;
-            background: var(--white);
-            border-radius: 18px;
-            box-shadow: 0 8px 32px rgba(34, 34, 59, 0.07);
-            padding: 3rem 2rem;
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: #f1f1f1;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 12px rgba(34, 34, 59, 0.05);
-            transition: transform 0.2s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px) scale(1.03);
-        }
-
-        .project-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .project-desc {
-            color: #555;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .project-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.98rem;
-        }
-
-        .about-content {
-            display: flex;
-            align-items: flex-start;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .about-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 2px 12px rgba(34, 34, 59, 0.08);
-        }
-
-        .about-text {
-            flex: 1;
-            min-width: 220px;
-        }
-
-        .skills-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .skill {
-            background: #e0e1dd;
-            color: var(--primary);
-            padding: 0.5rem 1.2rem;
-            border-radius: 20px;
-            font-size: 0.98rem;
-            font-weight: 500;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem 0 1rem 0;
-            color: #888;
-            font-size: 1rem;
-            background: var(--white);
-            margin-top: 4rem;
-        }
-
-        /* --- Menu Button and Navbar Styles --- */
-        .menu-btn {
-            position: fixed;
-            /* Place at bottom center, below navbar */
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 200;
-            background: var(--accent);
-            color: var(--white);
-            border: none;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(34, 34, 59, 0.12);
-            /* Add smooth transitions for movement, color, and opacity */
-            transition:
-                background 0.2s,
-                color 0.2s,
-                opacity 0.3s,
-                transform 0.3s,
-                box-shadow 0.2s,
-                visibility 0.3s;
-        }
-
-        .menu-btn:hover,
-        .close-btn:hover {
-            background: #277da1;
-        }
-
-        .close-btn {
-            left: 50% !important;
-            right: auto !important;
-            bottom: 90px;
-            top: auto;
-            transform: translateX(-50%);
-            z-index: 201;
-        }
-
-        .menu-btn,
-        .close-btn {
-            transition:
-                opacity 0.3s,
-                visibility 0.3s,
-                background 0.2s,
-                transform 0.35s cubic-bezier(.4, 2, .6, 1);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .menu-btn.active,
-        .close-btn.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            /* Optionally add a pop-in animation */
-            animation: btn-pop-in 0.45s cubic-bezier(.4, 2, .6, 1);
-        }
-
-        @keyframes btn-pop-in {
-            0% {
-                opacity: 0;
-                transform: scale(0.7) rotate(-20deg);
-            }
-
-            70% {
-                opacity: 1;
-                transform: scale(1.08) rotate(5deg);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0);
-            }
-        }
-
-        @keyframes btn-pop-out {
-            0% {
-                opacity: 1;
-                transform: scale(1) rotate(0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(0.7) rotate(10deg);
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .menu-btn,
-            .close-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1.5rem;
-                bottom: 8px;
-            }
-
-            .close-btn {
-                right: 10px;
-                top: 20px;
-            }
-        }
-
-        /* Hide the navbar but keep it in the DOM for animation */
-        .hide-navbar {
-            pointer-events: none;
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* 3D animation for about and project elements */
-        .animated-3d {
-            opacity: 0;
-            transform: perspective(800px) rotateY(40deg) scale(0.95) translateY(40px);
-            transition:
-                opacity 0.7s cubic-bezier(.4, 2, .6, 1),
-                transform 0.7s cubic-bezier(.4, 2, .6, 1);
-            will-change: opacity, transform;
-        }
-
-        .animated-3d.visible {
-            opacity: 1;
-            transform: perspective(800px) rotateY(0deg) scale(1) translateY(0);
-        }
-
-        /* Add this to your <style> for 3D click effect on sections */
-        .section.clicked-3d {
-            transition:
-                transform 0.7s cubic-bezier(.4, 2, .6, 1),
-                box-shadow 0.5s cubic-bezier(.4, 2, .6, 1);
-            /* The transform will be set inline from JS */
-            box-shadow: 0 16px 48px rgba(34, 34, 59, 0.18), 0 2px 12px rgba(34, 34, 59, 0.10);
-        }
-
-        .skills-bars {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        .skill-bar {
-            background: #f1f1f1;
-            border-radius: 12px;
-            padding: 1rem;
-            box-shadow: 0 2px 12px rgba(34, 34, 59, 0.05);
-            transition: transform 0.2s;
-        }
-
-        .skill-bar:hover {
-            transform: translateY(-8px) scale(1.03);
-        }
-
-        .skill-bar-label {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .skill-bar-label img {
-            margin-right: 0.5rem;
-        }
-
-        .skill-bar-track {
-            background: #e0e1dd;
-            border-radius: 10px;
-            height: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .skill-bar-fill {
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-
-        @media (min-width: 600px) {
-            .skills-bars {
-                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            }
-        }
-
-        /* Add to your <style> section */
-        .typewriter {
-            display: inline-block;
-            border-right: 2px solid var(--accent);
-            white-space: nowrap;
-            overflow: hidden;
-            vertical-align: bottom;
-            font-size: 3rem;
-            color: var(--primary);
-            min-width: 120px;
-            animation: blink-caret 0.7s steps(1) infinite;
-        }
-
-        @keyframes blink-caret {
-
-            0%,
-            100% {
-                border-color: var(--accent);
-            }
-
-            50% {
-                border-color: transparent;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -556,6 +15,10 @@
         <nav>
             <a href="#about">About</a>
             <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#education">Education</a>
+            <a href="#testimonials">Testimonials</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
@@ -579,8 +42,8 @@
         </div>
     </section>
 
-    <section class="section" id="about">
-        <div class="section-title animated-3d">About Me</div>
+    <section class="section" id="about" style="margin-top: 7rem;">
+        <div class=" section-title animated-3d">About Me</div>
         <div class="about-content">
             <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" alt="Profile"
                 class="about-img animated-3d">
@@ -602,15 +65,76 @@
         </div>
     </section>
 
+    <section class="section" id="skills">
+        <div class="section-title animated-3d">Skills</div>
+        <div class="skills-bars">
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                        alt="JavaScript" style="width:20px;vertical-align:middle;margin-right:6px;">
+                    JavaScript
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width: 100%; background: linear-gradient(90deg, #4ea8de, #277da1);"></div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React"
+                        style="width:20px;vertical-align:middle;margin-right:6px;">
+                    React
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width: 100%; background: linear-gradient(90deg, #4ea8de, #277da1);"></div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5"
+                        style="width:20px;vertical-align:middle;margin-right:6px;">
+                    HTML5
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width: 100%; background: linear-gradient(90deg, #4ea8de, #277da1);"></div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3"
+                        style="width:20px;vertical-align:middle;margin-right:6px;">
+                    CSS3
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width: 100%; background: linear-gradient(90deg, #4ea8de, #277da1);"></div>
+                </div>
+            </div>
+            <div class="skill-bar animated-3d">
+                <div class="skill-bar-label">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+                        alt="Node.js" style="width:20px;vertical-align:middle;margin-right:6px;">
+                    Node.js
+                </div>
+                <div class="skill-bar-track">
+                    <div class="skill-bar-fill"
+                        style="width: 100%; background: linear-gradient(90deg, #4ea8de, #277da1);"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="section" id="projects">
         <div class="section-title animated-3d">Projects</div>
         <div class="projects-grid">
             <div class="project-card animated-3d">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"
-                    alt="3D Portfolio" style="width:48px;height:48px;margin-bottom:1em;">
-                <div class="project-title">3D Portfolio</div>
-                <div class="project-desc">A personal portfolio website featuring interactive 3D models and smooth
-                    animations.</div>
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                    alt="Quiz Project" style="width:48px;height:48px;margin-bottom:1em;">
+                <div class="project-title">Quiz Project</div>
+                <div class="project-desc">A dynamic quiz web app with timer, scoring, and instant feedback, built using
+                    JavaScript and CSS animations.</div>
                 <a href="#" class="project-link">View Project</a>
             </div>
             <div class="project-card animated-3d">
@@ -627,158 +151,6 @@
                 <div class="project-title">UI Kit</div>
                 <div class="project-desc">A modern UI component library for fast and beautiful web development.</div>
                 <a href="#" class="project-link">View Project</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="skills">
-        <div class="section-title animated-3d">Skills</div>
-        <div class="skills-bars">
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
-                        alt="JavaScript" style="width:18px;vertical-align:middle;margin-right:6px;">
-                    JavaScript
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:95%;background:linear-gradient(90deg,#f7df1e,#ffe484);box-shadow:0 2px 8px #f7df1e80;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
-                        alt="TypeScript" style="width:18px;vertical-align:middle;margin-right:6px;">
-                    TypeScript
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:85%;background:linear-gradient(90deg,#3178c6,#6ec1e4);box-shadow:0 2px 8px #3178c680;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React"
-                        style="width:18px;vertical-align:middle;margin-right:6px;">
-                    React
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:90%;background:linear-gradient(90deg,#61dafb,#b2f1fb);box-shadow:0 2px 8px #61dafb80;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"
-                        alt="Next.js"
-                        style="width:18px;vertical-align:middle;margin-right:6px;background:#fff;border-radius:3px;">
-                    Next.js
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:80%;background:linear-gradient(90deg,#000,#444);box-shadow:0 2px 8px #00000080;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
-                        alt="Node.js" style="width:18px;vertical-align:middle;margin-right:6px;">
-                    Node.js
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:85%;background:linear-gradient(90deg,#68a063,#b6e2b3);box-shadow:0 2px 8px #68a06380;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"
-                        alt="Three.js"
-                        style="width:18px;vertical-align:middle;margin-right:6px;background:#fff;border-radius:3px;">
-                    Three.js
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:75%;background:linear-gradient(90deg,#000,#888);box-shadow:0 2px 8px #00000080;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5"
-                        style="width:18px;vertical-align:middle;margin-right:6px;">
-                    HTML5
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:95%;background:linear-gradient(90deg,#e44d26,#ffb199);box-shadow:0 2px 8px #e44d2680;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3"
-                        style="width:18px;vertical-align:middle;margin-right:6px;">
-                    CSS3
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:90%;background:linear-gradient(90deg,#2965f1,#6ec1e4);box-shadow:0 2px 8px #2965f180;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="Sass"
-                        style="width:18px;vertical-align:middle;margin-right:6px;">
-                    Sass
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:80%;background:linear-gradient(90deg,#cc6699,#fcb7d4);box-shadow:0 2px 8px #cc669980;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"
-                        style="width:18px;vertical-align:middle;margin-right:6px;">
-                    Git
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:85%;background:linear-gradient(90deg,#f34f29,#fbb199);box-shadow:0 2px 8px #f34f2980;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma"
-                        style="width:18px;vertical-align:middle;margin-right:6px;">
-                    Figma
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:70%;background:linear-gradient(90deg,#a259ff,#fbb199);box-shadow:0 2px 8px #a259ff80;">
-                    </div>
-                </div>
-            </div>
-            <div class="skill-bar animated-3d">
-                <div class="skill-bar-label">
-                    <img src="https://img.icons8.com/ios-filled/50/4ea8de/design--v1.png" alt="UI/UX"
-                        style="width:18px;vertical-align:middle;margin-right:6px;">
-                    UI/UX
-                </div>
-                <div class="skill-bar-track">
-                    <div class="skill-bar-fill"
-                        style="width:80%;background:linear-gradient(90deg,#4ea8de,#b2f1fb);box-shadow:0 2px 8px #4ea8de80;">
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -862,315 +234,7 @@
 
     <!-- Three.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
-    <script>
-        // 3D Model (rotating cube)
-        const canvas = document.getElementById('threeCanvas');
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
-        renderer.setClearColor(0x000000, 0);
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-        camera.position.z = 3;
-
-        // Lighting
-        const ambient = new THREE.AmbientLight(0xffffff, 0.7);
-        scene.add(ambient);
-        const directional = new THREE.DirectionalLight(0x4ea8de, 0.8);
-        directional.position.set(2, 2, 5);
-        scene.add(directional);
-
-        // Cube geometry
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshStandardMaterial({
-            color: 0x4ea8de,
-            metalness: 0.5,
-            roughness: 0.3
-        });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        // Animate
-        function animate() {
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.013;
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Responsive resize
-        function resize3D() {
-            const width = canvas.clientWidth;
-            const height = canvas.clientHeight;
-            renderer.setSize(width, height, false);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-        }
-        window.addEventListener('resize', resize3D);
-        resize3D();
-    </script>
-    <script>
-        // Scroll Line and Section Reveal
-        const scrollLine = document.getElementById('scrollLine');
-        const sections = document.querySelectorAll('.section');
-
-        function updateScrollLine() {
-            const scrollY = window.scrollY;
-            const docHeight = document.body.scrollHeight - window.innerHeight;
-            const percent = Math.min(scrollY / docHeight, 1);
-            scrollLine.style.height = (percent * 100) + 'vh';
-
-            // Reveal sections as scroll line passes them
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight * percent + 100) {
-                    section.classList.add('visible');
-                }
-            });
-        }
-        window.addEventListener('scroll', updateScrollLine);
-        window.addEventListener('resize', updateScrollLine);
-        document.addEventListener('DOMContentLoaded', () => {
-            updateScrollLine();
-            // Initial reveal for first section
-            setTimeout(() => {
-                sections[0].classList.add('visible');
-            }, 200);
-        });
-    </script>
-    <script>
-        // --- Particles Effect for Hero Section ---
-        const particlesCanvas = document.getElementById('heroParticles');
-        const ctx = particlesCanvas.getContext('2d');
-        let particles = [];
-        const PARTICLE_COUNT = 60;
-        let mouse = { x: null, y: null, radius: 100 };
-
-        function resizeParticlesCanvas() {
-            const hero = document.querySelector('.hero');
-            particlesCanvas.width = hero.offsetWidth;
-            particlesCanvas.height = hero.offsetHeight;
-        }
-        resizeParticlesCanvas();
-        window.addEventListener('resize', resizeParticlesCanvas);
-
-        function Particle() {
-            this.x = Math.random() * particlesCanvas.width;
-            this.y = Math.random() * particlesCanvas.height;
-            this.vx = (Math.random() - 0.5) * 0.7;
-            this.vy = (Math.random() - 0.5) * 0.7;
-            this.size = 2 + Math.random() * 2;
-            this.baseSize = this.size;
-            this.color = 'rgba(78,168,222,0.7)';
-        }
-        Particle.prototype.draw = function () {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fillStyle = this.color;
-            ctx.fill();
-        };
-        Particle.prototype.update = function () {
-            // Move
-            this.x += this.vx;
-            this.y += this.vy;
-
-            // Bounce on edges
-            if (this.x < 0 || this.x > particlesCanvas.width) this.vx *= -1;
-            if (this.y < 0 || this.y > particlesCanvas.height) this.vy *= -1;
-
-            // Interactivity
-            let dx = mouse.x - this.x;
-            let dy = mouse.y - this.y;
-            let dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < mouse.radius && dist > 0) {
-                // Repel
-                let angle = Math.atan2(dy, dx);
-                this.x -= Math.cos(angle) * 2;
-                this.y -= Math.sin(angle) * 2;
-                this.size = this.baseSize + 2;
-            } else {
-                this.size = this.baseSize;
-            }
-            this.draw();
-        };
-
-        function connectParticles() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a + 1; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 90) {
-                        ctx.strokeStyle = 'rgba(78,168,222,0.15)';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-            }
-            connectParticles();
-            requestAnimationFrame(animateParticles);
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                particles.push(new Particle());
-            }
-        }
-        initParticles();
-        animateParticles();
-
-        particlesCanvas.addEventListener('mousemove', function (e) {
-            const rect = particlesCanvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-            mouse.radius = 120;
-        });
-        particlesCanvas.addEventListener('mouseleave', function () {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        window.addEventListener('resize', () => {
-            resizeParticlesCanvas();
-            initParticles();
-        });
-    </script>
-    <script>
-        // Floating, autohide navbar with menu button and close button
-        const header = document.getElementById('mainHeader');
-        let lastScrollY = window.scrollY;
-        let navbarVisible = true;
-        let hideTimeout = null;
-
-        // Update showNavbar and hideNavbar to toggle .active for transitions
-        function showNavbar() {
-            header.classList.remove('hide-navbar', 'navbar-slide-out');
-            header.classList.add('navbar-slide-in');
-            navbarVisible = true;
-            clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(() => {
-                if (!header.matches(':hover')) hideNavbar();
-            }, 2500);
-
-            header.addEventListener('animationend', function handler(e) {
-                if (e.animationName === 'navbarSlideIn') {
-                    header.classList.remove('navbar-slide-in');
-                    header.removeEventListener('animationend', handler);
-                }
-            });
-        }
-
-        function hideNavbar() {
-            header.classList.remove('navbar-slide-in');
-            header.classList.add('navbar-slide-out');
-            navbarVisible = false;
-
-            header.addEventListener('animationend', function handler(e) {
-                if (e.animationName === 'navbarSlideOut') {
-                    header.classList.add('hide-navbar');
-                    header.classList.remove('navbar-slide-out');
-                    header.removeEventListener('animationend', handler);
-                }
-            });
-        }
-
-        // Hide on scroll down, show on scroll up
-        window.addEventListener('scroll', () => {
-            if (window.scrollY < 10) {
-                showNavbar();
-                return;
-            }
-            if (window.scrollY > lastScrollY && navbarVisible) {
-                hideNavbar();
-            } else if (window.scrollY < lastScrollY && !navbarVisible) {
-                showNavbar();
-            }
-            lastScrollY = window.scrollY;
-        });
-
-        // Hide initially if not at top
-        document.addEventListener('DOMContentLoaded', () => {
-            // Instantly hide both buttons to prevent flicker
-            menuBtn.style.display = 'none';
-            closeBtn.style.display = 'none';
-
-            // Wait for layout, then show correct button
-            setTimeout(() => {
-                if (window.scrollY > 10) {
-                    hideNavbar();
-                } else {
-                    header.classList.remove('hide-navbar');
-                    navbarVisible = true;
-                }
-            }, -100);
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const animatedEls = document.querySelectorAll('.animated-3d');
-            function reveal3dElements() {
-                animatedEls.forEach((el, i) => {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top < window.innerHeight - 60) {
-                        setTimeout(() => el.classList.add('visible'), i * 10); // stagger
-                    }
-                });
-            }
-            window.addEventListener('scroll', reveal3dElements);
-            window.addEventListener('resize', reveal3dElements);
-            reveal3dElements();
-        });
-    </script>
-    <script>
-        // Place this after your DOMContentLoaded or at the end of the body
-        const words = [
-            "HELLO, I AM KHALIL SHAKIR",
-            "WEB DEVELOPER",
-            "3D ENTHUSIAST",
-            "UI/UX DESIGNER",
-            "REACT SPECIALIST",
-            "CREATIVE CODER"
-        ];
-        let twIndex = 0, charIndex = 0, isDeleting = false;
-        const twElem = document.getElementById('typewriter');
-
-        function typeWriter() {
-            const word = words[twIndex];
-            if (isDeleting) {
-                charIndex--;
-                twElem.textContent = word.substring(0, charIndex);
-                if (charIndex === 0) {
-                    isDeleting = false;
-                    twIndex = (twIndex + 1) % words.length;
-                    setTimeout(typeWriter, 700);
-                } else {
-                    setTimeout(typeWriter, 40);
-                }
-            } else {
-                charIndex++;
-                twElem.textContent = word.substring(0, charIndex);
-                if (charIndex === word.length) {
-                    isDeleting = true;
-                    setTimeout(typeWriter, 1200);
-                } else {
-                    setTimeout(typeWriter, 80);
-                }
-            }
-        }
-        document.addEventListener('DOMContentLoaded', typeWriter);
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
